@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扑克战绩跟踪器 - 锦标赛结果</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .result-card {
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .profit-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        .profit-indicator.positive {
+            background-color: #10B981;
+        }
+        .profit-indicator.negative {
+            background-color: #EF4444;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .badge.trophy {
+            background-color: #FEF3C7;
+            color: #D97706;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background-color: #1E3A8A;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #1E3A8A;
+            border: 1px solid #1E3A8A;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .info-value {
+            font-weight: 500;
+            color: #1F2937;
+        }
+        .note-card {
+            background-color: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #8B5CF6;
+        }
+        .position-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+            margin-right: 16px;
+        }
+        .position-badge.gold {
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+        }
+        .position-badge.silver {
+            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
+        }
+        .position-badge.bronze {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+        }
+        .position-badge.other {
+            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-8">
+    <!-- 标题栏 -->
+    <header class="bg-white px-4 py-3 flex items-center border-b border-gray-200 sticky top-0 z-10">
+        <button class="mr-2">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-800">锦标赛详情</h1>
+        <div class="ml-auto">
+            <button class="text-gray-600">
+                <i class="fas fa-share-nodes"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="p-4">
+        <!-- 盈亏结果卡片 -->
+        <div class="result-card mb-6 relative overflow-hidden">
+            <div class="profit-indicator positive"></div>
+            <div class="p-5">
+                <div class="text-sm text-gray-500 mb-1">扑克之家 MTT锦标赛</div>
+                <div class="flex items-center mb-3">
+                    <div class="text-lg font-semibold text-gray-800 mr-2">周末特别赛</div>
+                    <div class="badge trophy">
+                        <i class="fas fa-trophy mr-1"></i>
+                        第3名
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="text-sm text-gray-500">总盈亏</div>
+                        <div class="stat-value text-green-600">+¥1,200</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">ROI</div>
+                        <div class="stat-value text-green-600">+545%</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 text-center bg-gray-50 rounded-lg p-3">
+                    <div>
+                        <div class="text-sm text-gray-500">总买入</div>
+                        <div class="text-xl font-bold text-gray-800">¥220</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">奖金</div>
+                        <div class="text-xl font-bold text-gray-800">¥1,420</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 锦标赛详情卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">锦标赛详情</h2>
+                
+                <div class="info-row">
+                    <div class="info-label">比赛名称</div>
+                    <div class="info-value">周末特别赛</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">比赛时长</div>
+                    <div class="info-value">5小时25分钟</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">锦标赛类型</div>
+                    <div class="info-value">MTT</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">游戏形式</div>
+                    <div class="info-value">无限注德州扑克</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">参赛人数</div>
+                    <div class="info-value">45人</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">起始筹码</div>
+                    <div class="info-value">10,000</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">地点</div>
+                    <div class="info-value">扑克之家</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">日期</div>
+                    <div class="info-value">2023-05-19</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结果与奖金卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">排名与奖金</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="position-badge gold">1</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">第1名</div>
+                            <div class="text-sm text-gray-500">张先生</div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥3,600</div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="position-badge silver">2</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">第2名</div>
+                            <div class="text-sm text-gray-500">李先生</div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥2,250</div>
+                    </div>
+                    
+                    <div class="flex items-center bg-purple-50 p-2 rounded-lg">
+                        <div class="position-badge bronze">3</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">第3名</div>
+                            <div class="text-sm text-gray-500">我</div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥1,420</div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="position-badge other">4</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">第4名</div>
+                            <div class="text-sm text-gray-500">王先生</div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥900</div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="position-badge other">5</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">第5名</div>
+                            <div class="text-sm text-gray-500">赵先生</div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥630</div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="flex justify-between text-sm">
+                        <div class="font-medium text-gray-700">总奖池</div>
+                        <div class="font-bold text-gray-800">¥8,800</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 买入记录卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">买入记录</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-arrow-down text-purple-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-800">初始买入</div>
+                                <div class="text-xs text-gray-500">19:30</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥200</div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-arrow-down text-purple-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-800">服务费</div>
+                                <div class="text-xs text-gray-500">19:30</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥20</div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="flex justify-between text-sm">
+                        <div class="font-medium text-gray-700">总买入</div>
+                        <div class="font-bold text-gray-800">¥220</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 笔记卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">比赛笔记</h2>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">桌位变动</div>
+                        <div class="text-xs text-gray-500">20:15</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        从3号桌移到7号桌，7号桌整体玩家偏松，2号位和5号位筹码较多
+                    </p>
+                </div>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">重要手牌</div>
+                        <div class="text-xs text-gray-500">20:45</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        QQ vs AK，翻牌无高牌，全进，对手没中，筹码翻倍
+                    </p>
+                </div>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">总结</div>
+                        <div class="text-xs text-gray-500">00:55</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        比赛整体发挥不错，在气泡阶段成功积累筹码，进入前三后与筹码领先的1号位AQ vs AK被河牌击中，遗憾止步第三。总体收获不错，对MTT后期策略仍有提升空间。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="flex gap-3">
+            <button class="btn-secondary">
+                编辑记录
+            </button>
+            <button class="btn-primary">
+                返回首页
+            </button>
+        </div>
+    </main>
+</body>
+</html> 
