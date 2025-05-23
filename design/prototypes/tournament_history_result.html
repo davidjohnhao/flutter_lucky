@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>扑克战绩跟踪器 - 锦标赛结果</title>
+    <title>扑克战绩跟踪器 - 历史锦标赛结果</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
@@ -90,29 +90,15 @@
             margin-bottom: 12px;
             border-left: 4px solid #8B5CF6;
         }
-        .position-badge {
-            width: 40px;
-            height: 40px;
-            border-radius: 20px;
-            display: flex;
+        .history-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: white;
-            margin-right: 16px;
-        }
-        .position-badge.gold {
-            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
-        }
-        .position-badge.silver {
-            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
-        }
-        .position-badge.bronze {
-            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-        }
-        .position-badge.other {
-            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: #F3E8FF;
+            color: #8B5CF6;
         }
     </style>
 </head>
@@ -122,7 +108,7 @@
         <button class="mr-2">
             <i class="fas fa-arrow-left text-gray-600"></i>
         </button>
-        <h1 class="text-lg font-semibold text-gray-800">锦标赛详情</h1>
+        <h1 class="text-lg font-semibold text-gray-800">历史锦标赛详情</h1>
         <div class="ml-auto">
             <button class="text-gray-600">
                 <i class="fas fa-share-nodes"></i>
@@ -151,7 +137,7 @@
                     </div>
                     <div>
                         <div class="text-sm text-gray-500">ROI</div>
-                        <div class="stat-value text-green-600">+545%</div>
+                        <div class="stat-value text-green-600">+600%</div>
                     </div>
                 </div>
                 
@@ -162,7 +148,7 @@
                     </div>
                     <div>
                         <div class="text-sm text-gray-500">奖金</div>
-                        <div class="text-xl font-bold text-gray-800">¥1,420</div>
+                        <div class="text-xl font-bold text-gray-800">¥1,400</div>
                     </div>
                 </div>
             </div>
@@ -230,17 +216,16 @@
             </div>
         </div>
         
-        <!-- 买入记录卡片 -->
+        <!-- 资金详情卡片 -->
         <div class="result-card mb-6">
             <div class="p-4">
-                <h2 class="text-lg font-semibold text-gray-800 mb-3">操作记录</h2>
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">资金详情</h2>
                 
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center">
                             <div>
-                                <div class="font-medium text-gray-800">初始买入</div>
-                                <div class="text-xs text-gray-500">19:30</div>
+                                <div class="font-medium text-gray-800">买入金额</div>
                             </div>
                         </div>
                         <div class="text-right font-medium text-gray-800">¥200</div>
@@ -249,31 +234,19 @@
                     <div class="flex justify-between items-center">
                         <div class="flex items-center">
                             <div>
-                                <div class="font-medium text-gray-800">最高筹码</div>
-                                <div class="text-xs text-gray-500">22:15</div>
+                                <div class="font-medium text-gray-800">获得奖金</div>
                             </div>
                         </div>
-                        <div class="text-right font-medium text-gray-800">22,450</div>
+                        <div class="text-right font-medium text-green-600">¥1,400</div>
                     </div>
                     
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
                         <div class="flex items-center">
                             <div>
-                                <div class="font-medium text-gray-800">最佳排名</div>
-                                <div class="text-xs text-gray-500">22:30</div>
+                                <div class="font-medium text-gray-800">净盈亏</div>
                             </div>
                         </div>
-                        <div class="text-right font-medium text-gray-800">2/45</div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center">
-                            <div>
-                                <div class="font-medium text-gray-800">最终排名</div>
-                                <div class="text-xs text-gray-500">00:55</div>
-                            </div>
-                        </div>
-                        <div class="text-right font-medium text-gray-800">3/45</div>
+                        <div class="text-right font-medium text-green-600">+¥1,200</div>
                     </div>
                 </div>
             </div>
@@ -286,28 +259,7 @@
                 
                 <div class="note-card">
                     <div class="flex justify-between items-start mb-1">
-                        <div class="font-medium text-gray-800">桌位变动</div>
-                        <div class="text-xs text-gray-500">20:15</div>
-                    </div>
-                    <p class="text-sm text-gray-600">
-                        从3号桌移到7号桌，7号桌整体玩家偏松，2号位和5号位筹码较多
-                    </p>
-                </div>
-                
-                <div class="note-card">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="font-medium text-gray-800">重要手牌</div>
-                        <div class="text-xs text-gray-500">20:45</div>
-                    </div>
-                    <p class="text-sm text-gray-600">
-                        QQ vs AK，翻牌无高牌，全进，对手没中，筹码翻倍
-                    </p>
-                </div>
-                
-                <div class="note-card">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="font-medium text-gray-800">总结</div>
-                        <div class="text-xs text-gray-500">00:55</div>
+                        <div class="font-medium text-gray-800">比赛总结</div>
                     </div>
                     <p class="text-sm text-gray-600">
                         比赛整体发挥不错，在气泡阶段成功积累筹码，进入前三后与筹码领先的1号位AQ vs AK被河牌击中，遗憾止步第三。总体收获不错，对MTT后期策略仍有提升空间。
