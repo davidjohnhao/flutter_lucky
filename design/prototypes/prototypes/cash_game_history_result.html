@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扑克战绩跟踪器 - 历史现金局结果</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .result-card {
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .profit-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        .profit-indicator.positive {
+            background-color: #10B981;
+        }
+        .profit-indicator.negative {
+            background-color: #EF4444;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background-color: #1E3A8A;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #1E3A8A;
+            border: 1px solid #1E3A8A;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .info-value {
+            font-weight: 500;
+            color: #1F2937;
+        }
+        .note-card {
+            background-color: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-8">
+    <!-- 标题栏 -->
+    <header class="bg-white px-4 py-3 flex items-center border-b border-gray-200 sticky top-0 z-10">
+        <button class="mr-2">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-800">历史现金局详情</h1>
+        <div class="ml-auto">
+            <button class="text-gray-600">
+                <i class="fas fa-share-nodes"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="p-4">
+        <!-- 盈亏结果卡片 -->
+        <div class="result-card mb-6 relative overflow-hidden">
+            <div class="profit-indicator positive"></div>
+            <div class="p-5">
+                <div class="text-sm text-gray-500 mb-1">新天地俱乐部 NLH $1/$2</div>
+                <div class="text-lg font-semibold text-gray-800 mb-3">2023-05-19 周五</div>
+                
+                <div class="grid grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="text-sm text-gray-500">总盈亏</div>
+                        <div class="stat-value text-green-600">+¥580</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">小时盈亏</div>
+                        <div class="stat-value text-green-600">+¥145</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 text-center bg-gray-50 rounded-lg p-3">
+                    <div>
+                        <div class="text-sm text-gray-500">买入</div>
+                        <div class="text-xl font-bold text-gray-800">¥1,000</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">带出</div>
+                        <div class="text-xl font-bold text-gray-800">¥1,580</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏详情卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">游戏详情</h2>
+                
+                <div class="info-row">
+                    <div class="info-label">游戏时长</div>
+                    <div class="info-value">4小时15分钟</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">游戏类型</div>
+                    <div class="info-value">无限注德州扑克</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">盲注级别</div>
+                    <div class="info-value">$1/$2</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">地点</div>
+                    <div class="info-value">新天地俱乐部</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">开始时间</div>
+                    <div class="info-value">19:30</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">结束时间</div>
+                    <div class="info-value">23:45</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">参与人数</div>
+                    <div class="info-value">9人</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">其他开支</div>
+                    <div class="info-value">¥200</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">买入次数</div>
+                    <div class="info-value">1次</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 笔记卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">游戏笔记</h2>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">位置观察</div>
+                        <div class="text-xs text-gray-500">20:45</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        1号位玩家非常紧，只玩高价值牌；3号位激进，经常诈唬河牌。
+                    </p>
+                </div>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">重要手牌</div>
+                        <div class="text-xs text-gray-500">21:22</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        AK vs 88，翻牌A，对手全压，我跟注赢得大底池。
+                    </p>
+                </div>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">总结</div>
+                        <div class="text-xs text-gray-500">23:45</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        今天整体表现良好，读牌准确，几次重要时刻的决策都很成功。需要注意的是在有多人参与的底池中应该更谨慎。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="flex gap-3">
+            <button class="btn-secondary">
+                编辑记录
+            </button>
+            <button class="btn-primary">
+                返回首页
+            </button>
+        </div>
+    </main>
+</body>
+</html> 

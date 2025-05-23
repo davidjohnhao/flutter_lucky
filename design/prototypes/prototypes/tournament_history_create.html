@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扑克战绩跟踪器 - 创建历史锦标赛</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .input-field {
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            width: 100%;
+            background-color: white;
+        }
+        .input-field:focus {
+            border-color: #8B5CF6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        .input-field::placeholder {
+            color: #9CA3AF;
+        }
+        .btn-primary {
+            background-color: #1E3A8A;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #1e40af;
+            transform: translateY(-1px);
+        }
+        .form-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .form-hint {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+        .chip-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chip.selected {
+            background-color: #8B5CF6;
+            color: white;
+        }
+        .chip:not(.selected) {
+            background-color: #F3F4F6;
+            color: #4B5563;
+        }
+        .chip:not(.selected):hover {
+            background-color: #E5E7EB;
+        }
+        .action-row {
+            display: flex;
+            gap: 12px;
+        }
+        .result-card {
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .profit-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        .profit-indicator.positive {
+            background-color: #10B981;
+        }
+        .profit-indicator.negative {
+            background-color: #EF4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+    <!-- 标题栏 -->
+    <header class="bg-white px-4 py-3 flex items-center border-b border-gray-200">
+        <button class="mr-4">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-bold text-gray-800">创建历史锦标赛</h1>
+        <div class="ml-auto">
+            <button class="text-purple-600">保存</button>
+        </div>
+    </header>
+
+    <main class="p-4">
+        <form>
+            <!-- 基本信息部分 -->
+            <div class="form-section">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">基本信息</h2>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="tournament-title">
+                        锦标赛名称
+                    </label>
+                    <input type="text" id="tournament-title" class="input-field" placeholder="例如：周末特别赛" value="周末特别赛">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="tournament-date">
+                        日期
+                    </label>
+                    <input type="date" id="tournament-date" class="input-field" value="2023-05-19">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="tournament-location">
+                        地点
+                    </label>
+                    <div class="relative">
+                        <select id="tournament-location" class="input-field appearance-none">
+                            <option value="">选择或输入地点</option>
+                            <option value="1">新天地俱乐部</option>
+                            <option value="2" selected>扑克之家</option>
+                            <option value="3">线上平台</option>
+                        </select>
+                        <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 锦标赛详情部分 -->
+            <div class="form-section">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">锦标赛详情</h2>
+                
+                <div class="mb-4">
+                    <label class="form-label">
+                        锦标赛类型
+                    </label>
+                    <div class="chip-select">
+                        <div class="chip selected">
+                            MTT
+                        </div>
+                        <div class="chip">
+                            SNG
+                        </div>
+                        <div class="chip">
+                            超级卫星赛
+                        </div>
+                        <div class="chip">
+                            其他
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="tournament-format">
+                        游戏形式
+                    </label>
+                    <div class="relative">
+                        <select id="tournament-format" class="input-field appearance-none">
+                            <option value="">选择游戏形式</option>
+                            <option value="1" selected>无限注德州扑克</option>
+                            <option value="2">固定限注德州扑克</option>
+                            <option value="3">奥马哈</option>
+                            <option value="4">混合游戏</option>
+                        </select>
+                        <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="time-spent">
+                        比赛时长
+                    </label>
+                    <input type="text" id="time-spent" class="input-field" placeholder="输入比赛时长(如：5小时30分钟)" value="5小时25分钟">
+                </div>
+            </div>
+            
+            <!-- 资金详情部分 -->
+            <div class="form-section">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">资金与结果</h2>
+                
+                <!-- 总买入和买入次数 -->
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="form-label" for="buy-in-total">
+                            总买入
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
+                            <input type="number" id="buy-in-total" class="input-field pl-8" placeholder="输入总买入金额" value="200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label" for="buy-in-count">
+                            买入次数
+                        </label>
+                        <input type="number" id="buy-in-count" class="input-field" placeholder="输入买入次数" value="1">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="starting-chips">
+                        带入筹码量
+                    </label>
+                    <input type="number" id="starting-chips" class="input-field" placeholder="输入初始筹码量" value="10000">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="form-label" for="total-players">
+                            参赛总人数
+                        </label>
+                        <input type="number" id="total-players" class="input-field" placeholder="输入参赛总人数" value="45">
+                    </div>
+                    <div>
+                        <label class="form-label" for="money-players">
+                            钱圈人数
+                        </label>
+                        <input type="number" id="money-players" class="input-field" placeholder="输入进入钱圈的人数" value="9">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="form-label" for="final-rank">
+                            最终排名
+                        </label>
+                        <input type="text" id="final-rank" class="input-field" placeholder="输入最终排名（如：3/45）" value="3/45">
+                    </div>
+                    <div>
+                        <label class="form-label" for="prize-money">
+                            获得奖金
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">¥</span>
+                            <input type="number" id="prize-money" class="input-field pl-8" placeholder="输入获得奖金" value="1420">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 盈亏计算 -->
+                <div class="result-card mb-4 relative overflow-hidden">
+                    <div class="profit-indicator positive"></div>
+                    <div class="p-4">
+                        <div class="text-sm text-gray-600 mb-2">锦标赛结果</div>
+                        
+                        <div class="flex justify-between items-center mb-3 px-1">
+                            <div class="text-sm text-gray-600">投资回报率</div>
+                            <div class="text-sm font-medium text-green-600">+710%</div>
+                        </div>
+                        
+                        <div class="flex justify-between bg-green-50 rounded-lg p-3">
+                            <div class="text-sm font-medium text-green-800">净盈亏</div>
+                            <div class="text-lg font-bold text-green-600">+¥1,220</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 备注部分 -->
+            <div class="form-section">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">备注</h2>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="notes">
+                        比赛笔记 (可选)
+                    </label>
+                    <textarea id="notes" class="input-field" rows="3" placeholder="添加本场比赛的总结、心得和观察">比赛整体发挥不错，在气泡阶段成功积累筹码，进入前三后与筹码领先的1号位AQ vs AK被河牌击中，遗憾止步第三。总体收获不错，对MTT后期策略仍有提升空间。</textarea>
+                </div>
+            </div>
+            
+            <!-- 底部按钮 -->
+            <div class="action-row">
+                <button type="button" class="btn-primary flex-1">
+                    保存记录
+                </button>
+            </div>
+        </form>
+    </main>
+</body>
+</html> 

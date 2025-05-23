@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扑克战绩跟踪器 - 历史锦标赛结果</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .result-card {
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .profit-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        .profit-indicator.positive {
+            background-color: #10B981;
+        }
+        .profit-indicator.negative {
+            background-color: #EF4444;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .badge.trophy {
+            background-color: #FEF3C7;
+            color: #D97706;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background-color: #1E3A8A;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #1E3A8A;
+            border: 1px solid #1E3A8A;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .info-value {
+            font-weight: 500;
+            color: #1F2937;
+        }
+        .note-card {
+            background-color: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #8B5CF6;
+        }
+        .history-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: #F3E8FF;
+            color: #8B5CF6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-8">
+    <!-- 标题栏 -->
+    <header class="bg-white px-4 py-3 flex items-center border-b border-gray-200 sticky top-0 z-10">
+        <button class="mr-2">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-800">历史锦标赛详情</h1>
+        <div class="ml-auto">
+            <button class="text-gray-600">
+                <i class="fas fa-share-nodes"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="p-4">
+        <!-- 盈亏结果卡片 -->
+        <div class="result-card mb-6 relative overflow-hidden">
+            <div class="profit-indicator positive"></div>
+            <div class="p-5">
+                <div class="text-sm text-gray-500 mb-1">扑克之家 MTT锦标赛</div>
+                <div class="flex items-center mb-3">
+                    <div class="text-lg font-semibold text-gray-800 mr-2">周末特别赛</div>
+                    <div class="badge trophy">
+                        <i class="fas fa-trophy mr-1"></i>
+                        第3名
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="text-sm text-gray-500">总盈亏</div>
+                        <div class="stat-value text-green-600">+¥1,200</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">ROI</div>
+                        <div class="stat-value text-green-600">+600%</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 text-center bg-gray-50 rounded-lg p-3">
+                    <div>
+                        <div class="text-sm text-gray-500">总买入</div>
+                        <div class="text-xl font-bold text-gray-800">¥200</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">奖金</div>
+                        <div class="text-xl font-bold text-gray-800">¥1,400</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 锦标赛详情卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">锦标赛详情</h2>
+                
+                <div class="info-row">
+                    <div class="info-label">比赛名称</div>
+                    <div class="info-value">周末特别赛</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">比赛时长</div>
+                    <div class="info-value">5小时25分钟</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">锦标赛类型</div>
+                    <div class="info-value">MTT</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">游戏形式</div>
+                    <div class="info-value">无限注德州扑克</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">买入次数</div>
+                    <div class="info-value">1次</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">比赛名次</div>
+                    <div class="info-value">第3名</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">参赛总人数</div>
+                    <div class="info-value">45人</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">钱圈人数</div>
+                    <div class="info-value">9人</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">起始筹码</div>
+                    <div class="info-value">10,000</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">地点</div>
+                    <div class="info-value">扑克之家</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">日期</div>
+                    <div class="info-value">2023-05-19</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 资金详情卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">资金详情</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div>
+                                <div class="font-medium text-gray-800">买入金额</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-medium text-gray-800">¥200</div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div>
+                                <div class="font-medium text-gray-800">获得奖金</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-medium text-green-600">¥1,400</div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                        <div class="flex items-center">
+                            <div>
+                                <div class="font-medium text-gray-800">净盈亏</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-medium text-green-600">+¥1,200</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 笔记卡片 -->
+        <div class="result-card mb-6">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">比赛笔记</h2>
+                
+                <div class="note-card">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="font-medium text-gray-800">比赛总结</div>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        比赛整体发挥不错，在气泡阶段成功积累筹码，进入前三后与筹码领先的1号位AQ vs AK被河牌击中，遗憾止步第三。总体收获不错，对MTT后期策略仍有提升空间。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="flex gap-3">
+            <button class="btn-secondary">
+                编辑记录
+            </button>
+            <button class="btn-primary">
+                返回首页
+            </button>
+        </div>
+    </main>
+</body>
+</html> 

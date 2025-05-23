@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扑克战绩跟踪器 - 创建历史现金局</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .form-input {
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-select {
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234B5563'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4B5563;
+            margin-bottom: 8px;
+        }
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            padding: 10px 0 20px 0; /* 底部增加安全区域高度 */
+        }
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 0;
+            color: #9CA3AF;
+            font-size: 12px;
+        }
+        .tab-item.active {
+            color: #1E3A8A;
+        }
+        .tab-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 标题栏 -->
+    <header class="bg-white p-4 flex items-center border-b border-gray-200">
+        <a href="#" class="mr-4">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </a>
+        <h1 class="text-xl font-bold text-gray-800">创建历史现金局</h1>
+    </header>
+
+    <main class="p-4 pb-6">
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-yellow-400"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        此功能用于记录已经结束的历史现金局。请填写完整信息后点击完成。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <form>
+            <!-- 基本信息 -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">基本信息</h2>
+                
+                <div class="mb-4">
+                    <label for="venue" class="form-label">场馆</label>
+                    <select id="venue" class="form-select">
+                        <option value="">选择场馆</option>
+                        <option value="1">新天地俱乐部</option>
+                        <option value="2">扑克之家</option>
+                        <option value="3">皇家扑克室</option>
+                        <option value="4">牌坊俱乐部</option>
+                        <option value="5">添加新场馆...</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="game-type" class="form-label">游戏类型</label>
+                    <select id="game-type" class="form-select">
+                        <option value="">选择类型</option>
+                        <option value="NLH">无限德扑 (NLH)</option>
+                        <option value="PLO">奥马哈 (PLO)</option>
+                        <option value="SNG">单桌锦标赛 (SNG)</option>
+                        <option value="OTHER">其他</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="date" class="form-label">日期</label>
+                        <input type="date" id="date" class="form-input" value="2023-05-20">
+                    </div>
+                    <div>
+                        <label for="time" class="form-label">时间</label>
+                        <input type="time" id="time" class="form-input" value="19:30">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="players" class="form-label">人数</label>
+                        <input type="number" id="players" class="form-input" value="9">
+                    </div>
+                    <div>
+                        <label for="duration" class="form-label">时长</label>
+                        <div class="flex items-center">
+                            <input type="number" id="duration-hours" class="form-input" placeholder="小时" value="3">
+                            <span class="mx-2 text-gray-500">:</span>
+                            <input type="number" id="duration-mins" class="form-input" placeholder="分钟" value="45">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label" for="blind-level">
+                        盲注级别
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="blind-level" class="form-input" placeholder="输入盲注级别，例如：5/10 或 5/10/20">
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-info-circle text-blue-600 mr-1"></i>使用/分隔小盲和大盲，例如：5/10 或 5/10/20（带前注）
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 资金详情 -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">资金详情</h2>
+                
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="buyin" class="form-label">总买入 (¥)</label>
+                        <input type="number" id="buyin" class="form-input" value="1000">
+                    </div>
+                    <div>
+                        <label for="buyin-count" class="form-label">买入次数</label>
+                        <input type="number" id="buyin-count" class="form-input" value="1" min="1">
+                    </div>
+                    <div>
+                        <label for="cashout" class="form-label">总带出 (¥)</label>
+                        <input type="number" id="cashout" class="form-input" value="1350">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="expenses" class="form-label">其他支出 (¥) <span class="text-gray-400 text-sm font-normal">选填</span></label>
+                    <input type="number" id="expenses" class="form-input" placeholder="如饮料、餐饮等">
+                </div>
+                
+                <div class="bg-white rounded-lg shadow mb-4 relative overflow-hidden">
+                    <div class="absolute top-0 bottom-0 right-0 w-1 bg-green-500"></div>
+                    <div class="p-4">
+                        <div class="text-sm text-gray-600 mb-2">盈亏情况</div>
+                        
+                        <div class="flex justify-between items-center mb-3 px-1">
+                            <div class="text-sm text-gray-600">每小时盈亏</div>
+                            <div class="text-sm font-medium text-green-600">+¥93/小时</div>
+                        </div>
+                        
+                        <div class="flex justify-between bg-green-50 rounded-lg p-3">
+                            <div class="text-sm font-medium text-green-800">净盈亏</div>
+                            <div class="text-lg font-bold text-green-600">+¥350</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 笔记 -->
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">笔记</h2>
+                
+                <div class="mb-4">
+                    <label for="notes" class="form-label">备注 <span class="text-gray-400 text-sm font-normal">选填</span></label>
+                    <textarea id="notes" rows="3" class="form-input" placeholder="记录想法、特殊牌局或需要复盘的情况..."></textarea>
+                </div>
+            </div>
+            
+            <!-- 为底部按钮预留空间 -->
+            <div class="h-20"></div>
+            
+            <!-- 按钮 -->
+            <div class="fixed bottom-0 left-0 right-0 px-4 pb-4 bg-white border-t border-gray-200 pt-3">
+                <button type="button" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">
+                    完成
+                </button>
+            </div>
+        </form>
+    </main>
+</body>
+</html> 
